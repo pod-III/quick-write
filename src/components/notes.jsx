@@ -49,11 +49,11 @@ export function Notes() {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add Notes</ModalHeader>
+          <ModalHeader>Add a Note</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl>
-              <Input value={myNote} onChange={handleSubmit} />
+              <Input value={myNote} onChange={handleSubmit} placeholder="Place your thoughts here..."/>
             </FormControl>
           </ModalBody>
 

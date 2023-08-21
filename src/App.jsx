@@ -18,10 +18,9 @@ function App() {
   return (
     <>
       <Grid
-        templateAreas={`"header header"
-                  "nav main"`}
+        templateAreas={`"header"
+                  "main"`}
         gridTemplateRows={"50px 1fr"}
-        gridTemplateColumns={"10rem 1fr"}
         h="100vh"
         gap="0"
         color="blackAlpha.700"
@@ -30,11 +29,6 @@ function App() {
       >
         <GridItem pl="2" bg={colors["pallete-2"]} area={"header"} textAlign={["center"]}>
           QuickWrite
-        </GridItem>
-        <GridItem pl="2" bg={colors["pallete-3"]} area={"nav"} p={"1rem 1.5rem"}>
-          <Nav>
-
-          </Nav>
         </GridItem>
         <GridItem pl="2" bg={colors["pallete-4"]} textColor={colors["pallete-1"]} area={"main"} p={"1rem"}>
           <Notes >
