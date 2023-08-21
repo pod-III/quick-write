@@ -1,35 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { Grid, GridItem } from "@chakra-ui/react";
+import { color } from "framer-motion";
+import { Nav } from "./components/nav";
+import { Notes } from "./components/notes";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+
+  let colors = {
+    "pallete-1":"#352F44",
+    "pallete-2":"#5C5470",
+    "pallete-3":"#B9B4C7",
+    "pallete-4":"#FAF0E6",
+    "pallete-5":"#F7F7F7"
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Grid
+        templateAreas={`"header header"
+                  "nav main"`}
+        gridTemplateRows={"50px 1fr"}
+        gridTemplateColumns={"10rem 1fr"}
+        h="100vh"
+        gap="0"
+        color="blackAlpha.700"
+        fontWeight="bold"
+        textColor={colors["pallete-5"]}
+      >
+        <GridItem pl="2" bg={colors["pallete-2"]} area={"header"} textAlign={["center"]}>
+          QuickWrite
+        </GridItem>
+        <GridItem pl="2" bg={colors["pallete-3"]} area={"nav"} p={"1rem 1.5rem"}>
+          <Nav>
+
+          </Nav>
+        </GridItem>
+        <GridItem pl="2" bg={colors["pallete-4"]} textColor={colors["pallete-1"]} area={"main"} p={"1rem"}>
+          <Notes >
+          </Notes>
+        </GridItem>
+      </Grid>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
