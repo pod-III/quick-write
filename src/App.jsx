@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Grid, GridItem } from "@chakra-ui/react";
 import { color } from "framer-motion";
-import { Nav } from "./components/nav";
 import { Notes } from "./components/notes";
 
 function App() {

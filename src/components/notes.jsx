@@ -16,31 +16,73 @@ import {
   useDisclosure,
   FormControl,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export function Notes() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [myNote, setMyNote] = useState("");
+  const [keys, setMyKeys] = useState([]);
+  const [cards, setCards] = useState([]);
 
   const submitButton = () => {
-    setMyNote('')
+    localStorage.setItem(`Note_${cards.length + 1}`, myNote)
+    setMyNote("");
     onClose();
+    cardsFetcher();
     console.log(myNote);
   };
 
   const closeButton = () => {
-    setMyNote("")
-    onClose()
-  }
+    setMyNote("");
+    onClose();
+  };
 
   const handleSubmit = (e) => {
     const { name, value } = e.target;
-    let note = ""
-    note = note + value.toString()
-    setMyNote(note)
+    let note = "";
+    note = note + value.toString();
+    setMyNote(note);
     console.log(myNote);
   };
 
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      // Handle the key press event here
+
+      console.log("Key pressed:", event.key);
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Your function logic here
+    console.log("Page loaded!");
+    console.log(cards)
+    cardsFetcher();
+  }, []);
+
+  const cardsFetcher = () => {
+    const cards = [];
+    let status = true;
+    let i = 0;
+    while (status) {
+      let card = localStorage.getItem(`Note_${i + 1}`);
+      console.log(card, status, i);
+      if (card === undefined || card === null) {
+        status = false;
+      } else {
+        cards.push(card);
+      }
+      i += 1;
+    }
+    setCards(cards);
+  };
   return (
     <>
       <Button onClick={onOpen} my={"1rem"}>
@@ -53,7 +95,11 @@ export function Notes() {
           <ModalCloseButton />
           <ModalBody>
             <FormControl>
-              <Input value={myNote} onChange={handleSubmit} placeholder="Place your thoughts here..."/>
+              <Input
+                value={myNote}
+                onChange={handleSubmit}
+                placeholder="Place your thoughts here..."
+              />
             </FormControl>
           </ModalBody>
 
@@ -68,7 +114,11 @@ export function Notes() {
         </ModalContent>
       </Modal>
       <div id="card-container">
-        <Card></Card>
+        {cards.map((card, index) => (
+          <Card key={index} p={4} borderWidth={1}>
+              <p>{card}</p>
+          </Card>
+        ))}
       </div>
     </>
   );
