@@ -15,26 +15,39 @@ import {
   ButtonGroup,
   useDisclosure,
   FormControl,
+  Grid,
+  GridItem,
+  Box,
+  IconButton,
+  Stack,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
 export function Notes() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [myNote, setMyNote] = useState("");
-  const [keys, setMyKeys] = useState([]);
   const [cards, setCards] = useState([]);
 
-  const submitButton = () => {
-    localStorage.setItem(`Note_${cards.length + 1}`, myNote)
-    setMyNote("");
-    onClose();
-    cardsFetcher();
-    console.log(myNote);
+  const saveCard = () => {
+    let data = cards;
+    let id = cards.length;
+    let object = [`${id}`, myNote];
+    data.push(object);
+    let dataObj = Object.fromEntries(data);
+    const objectString = JSON.stringify(dataObj);
+    console.log("this object string", objectString);
+    localStorage.setItem("cards", objectString);
   };
 
-  const closeButton = () => {
-    setMyNote("");
-    onClose();
+  const submitButton = () => {
+    if (myNote === "") {
+      console.log("write something mate");
+    } else {
+      saveCard();
+      setMyNote("");
+      cardsFetcher();
+      console.log(myNote);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -42,84 +55,70 @@ export function Notes() {
     let note = "";
     note = note + value.toString();
     setMyNote(note);
-    console.log(myNote);
   };
 
+  
   useEffect(() => {
-    const handleKeyPress = (event) => {
-      // Handle the key press event here
-
-      console.log("Key pressed:", event.key);
-    };
-
-    window.addEventListener("keydown", handleKeyPress);
-
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyPress);
-    };
-  }, []);
-
-  useEffect(() => {
-    // Your function logic here
     console.log("Page loaded!");
-    console.log(cards)
     cardsFetcher();
   }, []);
 
   const cardsFetcher = () => {
-    const cards = [];
-    let status = true;
-    let i = 0;
-    while (status) {
-      let card = localStorage.getItem(`Note_${i + 1}`);
-      console.log(card, status, i);
-      if (card === undefined || card === null) {
-        status = false;
-      } else {
-        cards.push(card);
-      }
-      i += 1;
+    const cardsString = localStorage.getItem("cards");
+    if (cardsString === undefined || cardsString === null) {
+      setCards([]);
+    } else {
+      const cardsObj = JSON.parse(cardsString);
+      const cards = Object.entries(cardsObj);
+      let card;
+      console.log(cards[0]);
+      setCards(cards);
     }
-    setCards(cards);
   };
+
   return (
     <>
-      <Button onClick={onOpen} my={"1rem"}>
-        +
-      </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Add a Note</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <FormControl>
-              <Input
-                value={myNote}
-                onChange={handleSubmit}
-                placeholder="Place your thoughts here..."
-              />
-            </FormControl>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={closeButton}>
-              Close
-            </Button>
-            <Button variant="ghost" onClick={submitButton}>
-              Add
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-      <div id="card-container">
-        {cards.map((card, index) => (
-          <Card key={index} p={4} borderWidth={1}>
-              <p>{card}</p>
-          </Card>
+      <Box bg={"#5C5470"} px={3} borderRadius="lg" position={"sticky"}>
+        <Input
+          value={myNote}
+          onChange={handleSubmit}
+          placeholder="Place your thoughts here..."
+          backgroundColor={"#f7f7f7"}
+          my={3}
+        />
+        <Button
+          variant="ghost"
+          bg={"#B9B4C7"}
+          onClick={submitButton}
+          w={"100%"}
+          my={3}
+        >
+          Add
+        </Button>
+      </Box>
+      <Grid templateColumns="repeat(5, 1fr)" gap={2}>
+        {cards.map((card) => (
+          <GridItem key={parseInt(card[0])}>
+            <Card p={1} borderWidth={1} my={2}>
+              <CardBody>
+                <Stack spacing="3">
+                  <p>{card[1]}</p>
+                  <Box display={"flex"} justifyContent={"center"}>
+                    <IconButton
+                      aria-label="Search database"
+                      icon={<DeleteIcon />}
+                    />
+                    <IconButton
+                      aria-label="Search database"
+                      icon={<EditIcon />}
+                    />
+                  </Box>
+                </Stack>
+              </CardBody>
+            </Card>
+          </GridItem>
         ))}
-      </div>
+      </Grid>
     </>
   );
 }
