@@ -26,7 +26,7 @@ function App() {
         fontWeight="bold"
         textColor={colors["pallete-5"]}
       >
-        <GridItem pl="2" bg={colors["pallete-2"]} area={"header"} textAlign={["center"]}>
+        <GridItem pl="2" bg={colors["pallete-2"]} area={"header"} textAlign={["center"]} pt={5}>
           QuickWrite
         </GridItem>
         <GridItem pl="2" bg={colors["pallete-4"]} textColor={colors["pallete-1"]} area={"main"} p={"1rem"}>
