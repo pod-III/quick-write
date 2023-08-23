@@ -5,18 +5,8 @@ import { useState } from "react";
 const Note = (props) => {
   const id = props.id;
   const note = props.note;
-  const [notes, setNotes] = useState(props.notelist);
-  const deleteNote = () => {
-    const filteredNotes = notes.filter((card) => parseInt(card[0]) !== id);
-    const newNotes = filteredNotes.map((card, index) => {
-      return [index.toString(), card[1]];
-    });
-    setNotes(newNotes);
-    console.log(id, note, notes, newNotes)
-    const dataObj = Object.fromEntries(newNotes);
-    const objectString = JSON.stringify(dataObj);
-    localStorage.setItem("cards", objectString);
-  };
+  const deleteNote = props.deleteFunction
+
   
 
   const editNote = () => {console.log('this edit button')};
@@ -31,7 +21,7 @@ const Note = (props) => {
               <IconButton
                 aria-label="delete note"
                 icon={<DeleteIcon />}
-                onClick={deleteNote}
+                onClick={() => deleteNote(id)}
               />
               <IconButton aria-label="edit note" icon={<EditIcon />} onClick={editNote}/>
             </Box>

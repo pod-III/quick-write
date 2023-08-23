@@ -12,6 +12,17 @@ export function Notes() {
   const [myNote, setMyNote] = useState("");
   const [cards, setCards] = useState([]);
 
+  const deleteNote = (id) => {
+    const filteredNotes = cards.filter((card) => parseInt(card[0]) !== id);
+    const newNotes = filteredNotes.map((card, index) => {
+      return [index.toString(), card[1]];
+    });
+    setCards(newNotes);
+    const dataObj = Object.fromEntries(newNotes);
+    const objectString = JSON.stringify(dataObj);
+    localStorage.setItem("cards", objectString);
+  };
+
   const saveCard = () => {
     const data = [...cards];
     const id = cards.length;
@@ -78,7 +89,7 @@ export function Notes() {
       <Grid templateColumns="repeat(5, 1fr)" gap={2}>
         {cards.map((card, index) => (
           <GridItem key={index}>
-            <Note notelist={cards} id={index} note={card}></Note>
+            <Note id={index} note={card} deleteFunction={deleteNote}></Note>
           </GridItem>
         ))}
       </Grid>
