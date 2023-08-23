@@ -1,10 +1,21 @@
 import { useState, useEffect } from "react";
-import { Box, Button, Grid, GridItem, Input } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Grid,
+  GridItem,
+  Input
+} from "@chakra-ui/react";
 import Note from "./note";
 
 export function Notes() {
   const [myNote, setMyNote] = useState("");
   const [cards, setCards] = useState([]);
+
+  const editNote = (id, newNote) => {
+    const newNotes = cards.map((card, index) => {return index === id? newNote: card})
+    setCards(newNotes)
+  };
 
   const deleteNote = (id) => {
     const newNotes = cards.filter((card, index) => index !== id);
@@ -68,6 +79,7 @@ export function Notes() {
                 id={index}
                 note={card}
                 deleteNote={() => deleteNote(index)}
+                editNote={editNote}
               ></Note>
             </GridItem>
           );
