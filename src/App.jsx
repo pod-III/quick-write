@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Grid, GridItem } from "@chakra-ui/react";
 import { color } from "framer-motion";
-import { Notes } from "./components/notes";
+import { Notes } from "./components/notes_container";
 
 function App() {
   const [count, setCount] = useState(0);
