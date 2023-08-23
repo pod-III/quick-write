@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Box,
-  Button,
-  Grid,
-  GridItem,
-  Textarea
-} from "@chakra-ui/react";
+import { Box, Button, Grid, GridItem, Textarea } from "@chakra-ui/react";
 import Note from "./note";
 
 export function Notes() {
@@ -13,10 +7,16 @@ export function Notes() {
   const [cards, setCards] = useState([]);
 
   const editNote = (id, newNote) => {
-    const newNotes = cards.map((card, index) => {return index === id? newNote: card})
-    localStorage.setItem("cards", JSON.stringify(newNotes));
-    setCards(newNotes)
-    console.log(cards)
+    if (!newNote) {
+      deleteNote(id)
+    } else {
+      const newNotes = cards.map((card, index) => {
+        return index === id ? newNote : card;
+      });
+      localStorage.setItem("cards", JSON.stringify(newNotes));
+      setCards(newNotes);
+      console.log(cards);
+    }
   };
 
   const deleteNote = (id) => {
@@ -63,7 +63,7 @@ export function Notes() {
           backgroundColor="#f7f7f7"
           my={3}
         />
-        
+
         <Button
           variant="ghost"
           bg="#B9B4C7"
