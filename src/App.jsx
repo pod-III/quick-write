@@ -1,13 +1,13 @@
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Grid, GridItem, Text } from "@chakra-ui/react";
 import { Notes } from "./components/notes_container";
 
 const colors = {
-    "pallete-1":"#352F44",
-    "pallete-2":"#5C5470",
-    "pallete-3":"#B9B4C7",
-    "pallete-4":"#FAF0E6",
-    "pallete-5":"#F7F7F7"
-}
+  "pallete-1": "#352F44",
+  "pallete-2": "#5C5470",
+  "pallete-3": "#B9B4C7",
+  "pallete-4": "#FAF0E6",
+  "pallete-5": "#F7F7F7",
+};
 
 function App() {
   return (
@@ -22,10 +22,22 @@ function App() {
         fontWeight="bold"
         textColor={colors["pallete-5"]}
       >
-        <GridItem pl="2" bg={colors["pallete-2"]} area="header" textAlign="center" pt={5}>
-          QuickWrite
+        <GridItem
+          pl="2"
+          bg={colors["pallete-2"]}
+          area="header"
+          textAlign="center"
+          pt={5}
+        >
+          <Text fontSize="2xl">QuickWrite</Text>
         </GridItem>
-        <GridItem pl="2" bg={colors["pallete-4"]} textColor={colors["pallete-1"]} area="main" p="1rem">
+        <GridItem
+          pl="2"
+          bg={colors["pallete-4"]}
+          textColor={colors["pallete-1"]}
+          area="main"
+          p="1rem"
+        >
           <Notes />
         </GridItem>
       </Grid>

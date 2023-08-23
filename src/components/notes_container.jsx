@@ -4,7 +4,7 @@ import {
   Button,
   Grid,
   GridItem,
-  Input
+  Textarea
 } from "@chakra-ui/react";
 import Note from "./note";
 
@@ -14,7 +14,9 @@ export function Notes() {
 
   const editNote = (id, newNote) => {
     const newNotes = cards.map((card, index) => {return index === id? newNote: card})
+    localStorage.setItem("cards", JSON.stringify(newNotes));
     setCards(newNotes)
+    console.log(cards)
   };
 
   const deleteNote = (id) => {
@@ -54,13 +56,14 @@ export function Notes() {
   return (
     <>
       <Box bg="#5C5470" px={3} borderRadius="lg" position="sticky">
-        <Input
+        <Textarea
           value={myNote}
           onChange={handleNoteChange}
           placeholder="Place your thoughts here..."
           backgroundColor="#f7f7f7"
           my={3}
         />
+        
         <Button
           variant="ghost"
           bg="#B9B4C7"
@@ -71,7 +74,7 @@ export function Notes() {
           Add
         </Button>
       </Box>
-      <Grid templateColumns="repeat(5, 1fr)" gap={2}>
+      <Grid templateColumns="repeat(4, 1fr)" gap={4} mt={4}>
         {cards.map((card, index) => {
           return (
             <GridItem key={index}>
