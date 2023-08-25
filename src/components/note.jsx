@@ -9,21 +9,24 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Note = ({ id, note, deleteNote, editNote }) => {
+  // Track state for the editables component
   const [ourNote, setOurNote] = useState(note);
+  
   const saveEdit = (value) => {
-    console.log(id, value);
+    // console.log(ourId, value);
     editNote(id, value);
-    console.log("submitted")
+    console.log("edit submitted");
   };
+
+  ourNote !== note? setOurNote(note) : console.log("re-rendered")
 
   return (
     <Card
-      p={1}
       borderWidth={1}
-      my={2}
+      m={"2 1"}
       transition={"all 0.3s ease-out"}
       _hover={{
         transform: "scale(1.1)",
@@ -31,13 +34,13 @@ const Note = ({ id, note, deleteNote, editNote }) => {
       }}
     >
       <CardBody>
-        <Stack spacing="3">
+        <Stack spacing="1">
           <Editable
             value={ourNote}
             submitOnBlur={true}
             onSubmit={(value) => saveEdit(value)}
           >
-            <EditablePreview/>
+            <EditablePreview />
             <EditableTextarea
               onChange={(e) => {
                 setOurNote(e.target.value);
@@ -48,7 +51,7 @@ const Note = ({ id, note, deleteNote, editNote }) => {
             <IconButton
               aria-label="delete note"
               icon={<DeleteIcon />}
-              onClick={deleteNote}
+              onClick={() => deleteNote()}
             />
           </Box>
         </Stack>
