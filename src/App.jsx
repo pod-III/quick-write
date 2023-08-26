@@ -1,5 +1,6 @@
-import { Grid, GridItem, Text, Box, Image } from "@chakra-ui/react";
+import { Grid, GridItem, Box, Image } from "@chakra-ui/react";
 import { NotesContainer } from "./components/notes_container";
+import { useEffect } from "react";
 
 const colors = {
   "pallete-1": "#352F44",
@@ -10,6 +11,23 @@ const colors = {
 };
 
 function App() {
+  // Key Binding Functions for the Input Component
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.ctrlKey && event.key === "Enter") {
+        // handleNotesubmit()
+        console.log("Ctrl+Enter was pressed");
+        event.preventDefault();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Make sure to clean up event listeners on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
   return (
     <>
       <Grid
@@ -36,7 +54,7 @@ function App() {
         </GridItem>
         <GridItem
           minWidth={0}
-          px={{base:"10px", sm:"1em"}}
+          px={{ base: "10px", sm: "1em" }}
           bg={colors["pallete-4"]}
           textColor={colors["pallete-1"]}
           area="main"

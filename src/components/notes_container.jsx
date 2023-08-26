@@ -10,23 +10,22 @@ export function NotesContainer() {
   // State for all the notes
   const [notes, setNotes] = useState([]);
 
-  // Key Binding Functions for the Input Component
-  useEffect(() => {
-    function handleKeyDown(event) {
-      if (event.ctrlKey && event.key === "Enter") {
-        // handleNotesubmit()
-        console.log("Ctrl+Enter was pressed");
-        event.preventDefault();
-      }
-    }
+  // State for notes sorting
+  // const [sort, setSort] = useState("recent");
 
-    window.addEventListener("keydown", handleKeyDown);
-
-    // Make sure to clean up event listeners on component unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+  // Function to create and sort the Notes
+  // This is important to make sure the sorting is working
+  // const sortNotes = (value) => {
+  //   let newNotes = [...value]
+  //   switch(sort){
+  //     case "recent":
+  //       newNotes.reverse()
+  //       break
+  //     case "old":
+  //       break
+  //   }
+  //   setNotes(newNotes)
+  // }
 
   // Notes Functions
   // Edit Note
@@ -48,7 +47,8 @@ export function NotesContainer() {
 
   // Save Notes
   const saveCard = () => {
-    const newNotes = [...notes, myNote];
+    let newNotes = [...notes];
+    newNotes.unshift(myNote)
     localStorage.setItem("notes", JSON.stringify(newNotes));
     setNotes(newNotes);
   };
