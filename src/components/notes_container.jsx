@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Button, Grid, GridItem, Textarea } from "@chakra-ui/react";
+import { Box, Button, Grid, GridItem, Textarea, Tooltip } from "@chakra-ui/react";
 import Note from "./note";
 
 export function NotesContainer() {
@@ -48,7 +48,7 @@ export function NotesContainer() {
   // Save Notes
   const saveCard = () => {
     let newNotes = [...notes];
-    newNotes.unshift(myNote)
+    newNotes.unshift(myNote);
     localStorage.setItem("notes", JSON.stringify(newNotes));
     setNotes(newNotes);
   };
@@ -82,6 +82,22 @@ export function NotesContainer() {
     console.log(parsedNotes);
   }, []);
 
+  //Key Binding
+  // useEffect(() => {
+  //   function handleKeyDown(event) {
+  //     if (event.ctrlKey && event.key === "Enter") {
+  //       console.log("Button was pressed");
+  //       event.preventDefault();
+  //     }
+  //   }
+  //   window.addEventListener("keydown", handleKeyDown);
+
+  //   // Make sure to clean up event listeners on component unmount
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, []);
+
   return (
     <>
       <Box
@@ -101,16 +117,16 @@ export function NotesContainer() {
           borderWidth={0}
           textColor={"#4B5842"}
         />
-        <Button
-          variant="ghost"
-          bg="#f7f7f7"
-          onClick={handleNotesubmit}
-          w="100%"
-          my={3}
-          textColor={"#4B5842"}
-        >
-          Add
-        </Button>
+          <Button
+            variant="ghost"
+            bg="#f7f7f7"
+            onClick={handleNotesubmit}
+            w="100%"
+            my={3}
+            textColor={"#4B5842"}
+          >
+            Add
+          </Button>
       </Box>
       <Grid
         templateColumns={{

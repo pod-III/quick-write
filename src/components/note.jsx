@@ -7,6 +7,7 @@ import {
   CardBody,
   Stack,
   Box,
+  Tooltip
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { memo } from "react";
@@ -45,13 +46,15 @@ const Note = ({ id, notes, deleteNote, editNote, noteChange }) => {
             <EditableTextarea minH={"200px"} minW={"250px"} />
           </Editable>
           <Box display="flex" justifyContent="flex-end">
-            <IconButton
-              aria-label="delete note"
-              icon={<DeleteIcon />}
-              onClick={() => {
-                deleteNote(id);
-              }}
-            />
+            <Tooltip label="Delete Note" bg="red.600" closeDelay={150}>
+              <IconButton
+                aria-label="delete note"
+                icon={<DeleteIcon />}
+                onClick={() => {
+                  deleteNote(id);
+                }}
+              />
+            </Tooltip>
           </Box>
         </Stack>
       </CardBody>
