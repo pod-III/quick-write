@@ -9,19 +9,17 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { useEffect, useState } from "react";
+import { useState, memo } from "react";
 
-const Note = ({ id, note, deleteNote, editNote }) => {
-  // Track state for the editables component
-  const [ourNote, setOurNote] = useState(note);
-  
+const Note = ({ id, notes, deleteNote, editNote, noteChange }) => {
+  // Define note from the Notes Array
+  const [note, setNote] = useState(notes[id]);
+
   const saveEdit = (value) => {
     // console.log(ourId, value);
     editNote(id, value);
-    console.log("edit submitted");
+    // console.log("edit submitted");
   };
-
-  ourNote !== note? setOurNote(note) : console.log("re-rendered")
 
   return (
     <Card
@@ -36,22 +34,27 @@ const Note = ({ id, note, deleteNote, editNote }) => {
       <CardBody>
         <Stack spacing="1">
           <Editable
-            value={ourNote}
+            value={notes[id]}
             submitOnBlur={true}
-            onSubmit={(value) => saveEdit(value)}
+            onSubmit={(value) => {
+              saveEdit(value);
+              setNote(notes[id]);
+            }}
+            onChange={(e) => {
+              setNote(e);
+              noteChange(id, e);
+            }}
           >
             <EditablePreview />
-            <EditableTextarea
-              onChange={(e) => {
-                setOurNote(e.target.value);
-              }}
-            />
+            <EditableTextarea />
           </Editable>
           <Box display="flex" justifyContent="flex-end">
             <IconButton
               aria-label="delete note"
               icon={<DeleteIcon />}
-              onClick={() => deleteNote()}
+              onClick={() => {
+                deleteNote(id);
+              }}
             />
           </Box>
         </Stack>
@@ -60,4 +63,4 @@ const Note = ({ id, note, deleteNote, editNote }) => {
   );
 };
 
-export default Note;
+export default memo(Note);

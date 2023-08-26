@@ -1,5 +1,5 @@
 import { Grid, GridItem, Text } from "@chakra-ui/react";
-import { Notes } from "./components/notes_container";
+import { NotesContainer } from "./components/notes_container";
 
 const colors = {
   "pallete-1": "#352F44",
@@ -38,7 +38,7 @@ function App() {
           area="main"
           p="1rem"
         >
-          <Notes />
+          <NotesContainer />
         </GridItem>
       </Grid>
     </>

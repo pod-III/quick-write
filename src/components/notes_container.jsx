@@ -1,14 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import { Box, Button, Grid, GridItem, Textarea } from "@chakra-ui/react";
 import Note from "./note";
+import { easeOut } from "framer-motion";
 
-export function Notes() {
+export function NotesContainer() {
   // Two major states
   // State for the notes that is currently taken in the input area
   const [myNote, setMyNote] = useState("");
   
   // State for all the notes 
-  const [cards, setCards] = useState([]);
+  const [notes, setNotes] = useState([]);
+
+  // Key Binding Functions
+  const enterKey = (e) => {
+    console.log(e)
+  }
 
   // Notes Functions
   // Edit Note
@@ -16,51 +22,41 @@ export function Notes() {
     if (!newNote) {
       deleteNote(id)
     } else {
-    const newNotes = cards.map((card, index) => {
+    const newNotes = notes.map((card, index) => {
       return index === id ? newNote : card;
     });
-    localStorage.setItem("cards", JSON.stringify(newNotes));
-    setCards(newNotes);
-    console.log(cards);
+    localStorage.setItem("notes", JSON.stringify(newNotes));
+    setNotes(newNotes);
+    console.log(notes);
     }
   };
 
 
   // Delete Notes
   const deleteNote = (id) => {
-    const newNotes = cards.filter((card, index) => index !== id);
-    localStorage.setItem("cards", JSON.stringify(newNotes));
-    console.log(newNotes, id);
-    setCards(newNotes);
-
-    // const filteredNotes = cards.filter((card) => parseInt(card[0]) !== id);
-    // const newNotes = filteredNotes.map((card, index) => {
-    //   return [index.toString(), card[1]];
-    // });
-    // setCards(newNotes);
-    // const dataObj = Object.fromEntries(newNotes);
-    // const objectString = JSON.stringify(dataObj);
-    // localStorage.setItem("cards", objectString);
+    const newNotes = notes.filter((card, index) => index !== id);
+    localStorage.setItem("notes", JSON.stringify(newNotes));
+    setNotes(newNotes);
   };
 
 
   // Save Notes
   const saveCard = () => {
-    const newNotes = [...cards, myNote];
-    localStorage.setItem("cards", JSON.stringify(newNotes));
-    setCards(newNotes);
+    const newNotes = [...notes, myNote];
+    localStorage.setItem("notes", JSON.stringify(newNotes));
+    setNotes(newNotes);
   };
 
 
   // Add New Notes
-  const handleCardSubmit = () => {
+  const handleNotesubmit = () => {
     if (!myNote) {
       console.log("Write something, mate");
     } else {
       saveCard();
       setMyNote("");
       // console.log(myNote);
-      // console.log(cards);
+      // console.log(notes);
     }
   };
 
@@ -69,12 +65,20 @@ export function Notes() {
     setMyNote(e.target.value);
   };
 
+  // Real Time change for input to change the value State per each note editables
+  const handleNotesChange = (id, e) => {
+    let newNotes = notes
+    newNotes[id] = e.toString()
+    setNotes(newNotes);
+    console.log("edit", notes)
+  };
+
   // Initiate the page
   useEffect(() => {
-    const localCards = localStorage.getItem("cards");
-    const parsedCards = localCards ? JSON.parse(localCards) : [];
-    setCards(parsedCards);
-    console.log(parsedCards);
+    const localNotes = localStorage.getItem("notes");
+    const parsedNotes = localNotes ? JSON.parse(localNotes) : [];
+    setNotes(parsedNotes);
+    console.log(parsedNotes);
   }, []);
 
   return (
@@ -91,7 +95,8 @@ export function Notes() {
         <Button
           variant="ghost"
           bg="#B9B4C7"
-          onClick={handleCardSubmit}
+          onClick={handleNotesubmit}
+          onKeyDown={(e) => enterKey(e)}
           w="100%"
           my={3}
         >
@@ -99,15 +104,16 @@ export function Notes() {
         </Button>
       </Box>
       <Grid templateColumns="repeat(4, 1fr)" gap={4} mt={4}>
-        {cards.map((card, index) => {
-          console.log("New Card Made", index, card)
+        {notes.map((card, index) => {
+          // console.log("New Card Made", index, card)
           return (
             <GridItem key={index}>
               <Note
                 id={index}
-                note={card}
-                deleteNote={() => deleteNote(index)}
+                notes={notes}
+                deleteNote={deleteNote}
                 editNote={editNote}
+                noteChange={handleNotesChange}
               ></Note>
             </GridItem>
           );
