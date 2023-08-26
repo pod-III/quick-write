@@ -1,7 +1,6 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect } from "react";
 import { Box, Button, Grid, GridItem, Textarea } from "@chakra-ui/react";
 import Note from "./note";
-import { easeOut } from "framer-motion";
 
 export function NotesContainer() {
   // Two major states
@@ -11,24 +10,33 @@ export function NotesContainer() {
   // State for all the notes 
   const [notes, setNotes] = useState([]);
 
-  // Key Binding Functions
-  const enterKey = (e) => {
-    console.log(e)
-  }
+  // Key Binding Functions for the Input Component
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.ctrlKey && event.key === 'Enter') {
+        // handleNotesubmit()
+        console.log('Ctrl+Enter was pressed');
+        event.preventDefault();
+      }
+    }
+    
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Make sure to clean up event listeners on component unmount
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   // Notes Functions
   // Edit Note
   const editNote = (id, newNote) => {
-    if (!newNote) {
-      deleteNote(id)
-    } else {
     const newNotes = notes.map((card, index) => {
       return index === id ? newNote : card;
     });
     localStorage.setItem("notes", JSON.stringify(newNotes));
     setNotes(newNotes);
     console.log(notes);
-    }
   };
 
 
@@ -50,14 +58,10 @@ export function NotesContainer() {
 
   // Add New Notes
   const handleNotesubmit = () => {
-    if (!myNote) {
-      console.log("Write something, mate");
-    } else {
       saveCard();
       setMyNote("");
-      // console.log(myNote);
-      // console.log(notes);
-    }
+      console.log(myNote);
+      console.log(notes);
   };
 
   // Real Time change for input to change the value State
@@ -67,11 +71,12 @@ export function NotesContainer() {
 
   // Real Time change for input to change the value State per each note editables
   const handleNotesChange = (id, e) => {
-    let newNotes = notes
-    newNotes[id] = e.toString()
+    let newNotes = [...notes];
+    newNotes[id] = e.toString();
     setNotes(newNotes);
-    console.log("edit", notes)
+    console.log("edit", newNotes);
   };
+
 
   // Initiate the page
   useEffect(() => {
@@ -83,29 +88,36 @@ export function NotesContainer() {
 
   return (
     <>
-      <Box bg="#5C5470" px={3} borderRadius="lg" position="sticky">
+      <Box bg="#62A87C" px={3} borderRadius="lg" position="sticky" boxShadow='2xl'>
         <Textarea
           value={myNote}
           onChange={handleNoteChange}
           placeholder="Place your thoughts here..."
           backgroundColor="#f7f7f7"
           my={3}
+          borderWidth={0}
+          textColor={"#4B5842"}
         />
-
         <Button
           variant="ghost"
-          bg="#B9B4C7"
+          bg="#f7f7f7"
           onClick={handleNotesubmit}
-          onKeyDown={(e) => enterKey(e)}
           w="100%"
           my={3}
+          textColor={"#4B5842"}
         >
           Add
         </Button>
       </Box>
       <Grid templateColumns="repeat(4, 1fr)" gap={4} mt={4}>
-        {notes.map((card, index) => {
+        {notes.map((note, index) => {
           // console.log("New Card Made", index, card)
+          if (note === "") {
+            console.log("Empty Notes")
+            let cards = [...notes]
+            cards = cards.slice(0, index).concat(cards.slice(index + 1))
+            setNotes(cards)}
+          else {
           return (
             <GridItem key={index}>
               <Note
@@ -117,7 +129,7 @@ export function NotesContainer() {
               ></Note>
             </GridItem>
           );
-        })}
+        }})}
       </Grid>
     </>
   );

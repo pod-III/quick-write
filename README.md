@@ -7,7 +7,6 @@ QuickWrite is a powerful note-taking web application built using React. It allow
 ## Features
 
 - **Responsive Design**: QuickWrite is designed to be compatible with various devices and screen sizes, ensuring a seamless note-taking experience across desktop and mobile platforms.
-- **User Authentication**: Users can create an account, log in, and securely access their notes using authentication features incorporated into the app.
 - **Create and Edit Notes**: Users can create new notes, add titles, descriptions, and organize them into categories for better organization and easy retrieval.
 ## Installation
 
@@ -22,7 +21,7 @@ To install and run QuickWrite on your local machine, follow these steps:
 2. Change into the project directory:
 
    ```bash
-   cd quickwrite
+   cd quick-write
    ```
 
 3. Install the necessary dependencies:

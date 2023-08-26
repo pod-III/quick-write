@@ -23,7 +23,7 @@ const Note = ({ id, notes, deleteNote, editNote, noteChange }) => {
 
   return (
     <Card
-      borderWidth={1}
+      borderWidth={0}
       m={"2 1"}
       transition={"all 0.3s ease-out"}
       _hover={{
@@ -44,6 +44,7 @@ const Note = ({ id, notes, deleteNote, editNote, noteChange }) => {
               setNote(e);
               noteChange(id, e);
             }}
+            textColor={"#4B5842"}
           >
             <EditablePreview />
             <EditableTextarea />
