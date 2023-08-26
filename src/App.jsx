@@ -28,18 +28,19 @@ function App() {
               src="src/assets/quickwrite-logo.png"
               alt="quickwrite"
               width={"250px"}
-              margin={{ base: "0 2em", sm: "0 auto" }}
+              margin={{ base: "0 1em", sm: "0 auto" }}
               padding={0}
               height={"100%"}
             />
           </Box>
         </GridItem>
         <GridItem
-          pl="2"
+          minWidth={0}
+          px={{base:"10px", sm:"1em"}}
           bg={colors["pallete-4"]}
           textColor={colors["pallete-1"]}
           area="main"
-          p="1rem"
+          pt="1em"
         >
           <NotesContainer />
         </GridItem>

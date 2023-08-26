@@ -9,12 +9,9 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { useState, memo } from "react";
+import { memo } from "react";
 
 const Note = ({ id, notes, deleteNote, editNote, noteChange }) => {
-  // Define note from the Notes Array
-  const [note, setNote] = useState(notes[id]);
-
   const saveEdit = (value) => {
     // console.log(ourId, value);
     editNote(id, value);
@@ -38,16 +35,14 @@ const Note = ({ id, notes, deleteNote, editNote, noteChange }) => {
             submitOnBlur={true}
             onSubmit={(value) => {
               saveEdit(value);
-              setNote(notes[id]);
             }}
             onChange={(e) => {
-              setNote(e);
               noteChange(id, e);
             }}
             textColor={"#4B5842"}
           >
             <EditablePreview />
-            <EditableTextarea />
+            <EditableTextarea minH={"200px"} minW={"250px"} />
           </Editable>
           <Box display="flex" justifyContent="flex-end">
             <IconButton
