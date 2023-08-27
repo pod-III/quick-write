@@ -126,7 +126,7 @@ function App() {
               closeDelay={250}
             >
               <Image
-                src="src/assets/quickwrite-logo.png"
+                src={'src/assets/logo.svg'}
                 alt="quickwrite"
                 width={"250px"}
                 margin={"0 1em"}
@@ -152,3 +152,5 @@ function App() {
 }
 
 export default App;
+  
+    
