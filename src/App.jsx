@@ -126,7 +126,7 @@ function App() {
               closeDelay={250}
             >
               <Image
-                src={'src/assets/logo.svg'}
+                src={'/logo.svg'}
                 alt="quickwrite"
                 width={"250px"}
                 margin={"0 1em"}
