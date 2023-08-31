@@ -15,7 +15,7 @@ To install and run QuickWrite on your local machine, follow these steps:
 1. Clone the repository from GitHub:
 
    ```bash
-   git clone https://github.com/your-username/quickwrite.git
+   git clone https://github.com/pod-III/quick-write.git
    ```
 
 2. Change into the project directory:
