@@ -1,5 +1,18 @@
-import { useState, useEffect } from "react";
-import { Box, Button, Grid, GridItem, Textarea, Tooltip } from "@chakra-ui/react";
+import { useState, useEffect, useRef } from "react";
+import {
+  Box,
+  Button,
+  Grid,
+  GridItem,
+  Textarea,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  useDisclosure,
+} from "@chakra-ui/react";
 import Note from "./note";
 
 export function NotesContainer() {
@@ -9,6 +22,9 @@ export function NotesContainer() {
 
   // State for all the notes
   const [notes, setNotes] = useState([]);
+
+  // State to track the id of current opened note
+  const [id, setId] = useState(null)
 
   // State for notes sorting
   // const [sort, setSort] = useState("recent");
@@ -40,6 +56,11 @@ export function NotesContainer() {
 
   // Delete Notes
   const deleteNote = (id) => {
+    setId(id)
+    onOpen();
+  };
+
+  const deleteTrue = () => {
     const newNotes = notes.filter((card, index) => index !== id);
     localStorage.setItem("notes", JSON.stringify(newNotes));
     setNotes(newNotes);
@@ -98,8 +119,46 @@ export function NotesContainer() {
   //   };
   // }, []);
 
+  // Hook and useRef for the Alert Dialog
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
+
   return (
     <>
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        closeOnOverlayClick={true}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Note
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={() => {
+                  onClose();
+                  deleteTrue();
+                }}
+                ml={3}
+              >
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
       <Box
         bg="#62A87C"
         px={3}
@@ -117,16 +176,16 @@ export function NotesContainer() {
           borderWidth={0}
           textColor={"#4B5842"}
         />
-          <Button
-            variant="ghost"
-            bg="#f7f7f7"
-            onClick={handleNotesubmit}
-            w="100%"
-            my={3}
-            textColor={"#4B5842"}
-          >
-            Add
-          </Button>
+        <Button
+          variant="ghost"
+          bg="#f7f7f7"
+          onClick={handleNotesubmit}
+          w="100%"
+          my={3}
+          textColor={"#4B5842"}
+        >
+          Add
+        </Button>
       </Box>
       <Grid
         templateColumns={{
